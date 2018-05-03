@@ -1,0 +1,69 @@
+runtime: python27
+api_version: 1
+threadsafe: true
+
+libraries:
+- name: webapp2
+  version: latest
+- name: jinja2
+  version: latest
+
+handlers:
+  - url: /slides
+    static_files: public/slides/build/index.html
+    upload: public/slides/build/index.html   
+    secure: always
+
+  - url: /slides/
+    static_files: public/slides/build/index.html
+    upload: public/slides/build/index.html   
+    secure: always
+    http_headers:
+      Link: '</slides/styles/main.css>; rel=preload; as=style'
+
+  - url: /slides/(.+)
+    static_files: public/slides/build/\1
+    upload: public/slides/build/(.*)    
+    secure: always 
+    
+  - url: /bulletin
+    static_files: public/bulletin/build/index.html
+    upload: public/bulletin/build/index.html   
+    secure: always
+
+  - url: /bulletin/
+    static_files: public/bulletin/build/index.html
+    upload: public/bulletin/build/index.html   
+    secure: always
+    http_headers:
+      Link: '</bulletin/styles/main.css>; rel=preload; as=style'
+
+  - url: /bulletin/(.+)
+    static_files: public/bulletin/build/\1
+    upload: public/bulletin/build/(.*)    
+    secure: always 
+
+  - url: /.*
+    script: redirect.app
+
+skip_files:
+  - ^(.*/)?app\.yaml
+  - ^(.*/)?app\.yml
+  - ^(.*/)?#.*#
+  - ^(.*/)?.*~
+  - ^(.*/)?.*\.py[co]
+  - ^(.*/)?.*/RCS/.*
+  - ^(.*/)?\..*
+  - ^(.*/)?tests$
+  - ^(.*/)?test$
+  - ^test/(.*/)?
+  - ^COPYING.LESSER
+  - ^README\..*
+  - \.gitignore
+  - ^\.git/.*
+  - \.*\.lint$
+  - ^fabfile\.py
+  - ^testrunner\.py
+  - ^grunt\.js
+  - ^(.*/)?node_modules/.*
+  - ^(.*/)?src/.*
